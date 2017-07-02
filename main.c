@@ -3,10 +3,8 @@
 #include <windows.h>
 #include <math.h>
 
-
 #define V 21
 #define H 75
-
 
 void inicio (char campo[V][H], int pelX,int pelY, int inijug, int finjug, int iniia, int finia);
 void borde (char campo[V][H]);
@@ -23,7 +21,6 @@ int numeroAleatoreo();
 void titilante();
 
 
-
 int main(){
     srand(time(NULL));
     int pelX, pelY, inijug, finjug, iniia, finia; // Variables Posicion
@@ -31,6 +28,7 @@ int main(){
     char campo [V][H];
 
     hidecursor();
+
     //posicion
     pelX = 37;
     pelY = 10;
@@ -46,9 +44,8 @@ int main(){
     modX = -1;
     modY = -1;
 
-
     inicio(campo,pelX,pelY,inijug,finjug,iniia,finia);
-    //system("pause");
+
     gameloop(campo,pelX,pelY,inijug,finjug,iniia,finia,modX,modY,modia);
     system("pause");
     return 0;
@@ -67,20 +64,21 @@ void borde (char campo[V][H]){
 
     int i, j;
     for (i = 0; i < V ; i++){
-        for( j = 0; j <= H; j++)
+        for( j = 0; j <= H; j++){
 
             if (i == 0 || i == V-1){
-                campo[i][j] = '.';
+                campo[i][j] = '°';
             }
             else if (j == 0 || j == H){
-                campo[i][j] = '.';
+                campo[i][j] = '°';
             }
             else if (j== 37){
-                campo[i][j] = '|';
+                campo[i][j] = '°';
             }
             else{
                 campo[i][j] = ' ';
             }
+        }
     }
 }
 void raqjug (char campo [V][H], int inijug, int finjug){
@@ -88,7 +86,7 @@ void raqjug (char campo [V][H], int inijug, int finjug){
 
     for (i = inijug; i <= finjug; i++){
         for (j = 2; j <=3; j++){
-            campo[i][j] = 'K';
+            campo[i][j] = '°';
         }
     }
 }
@@ -98,7 +96,7 @@ void raqia (char campo[V][H], int iniia, int finia){
     int i, j;
     for (i = iniia; i <= finia; i++){
         for (j = H-4; j <=H-3; j++){
-            campo[i][j] = 'R';
+            campo[i][j] = '°';
         }
     }
 }
@@ -122,23 +120,23 @@ void gameloop (char campo[V][H], int pelX,int pelY, int inijug, int finjug, int 
     int goljug, golia;
     goljug = 0;
     golia = 0;
-
     titilante();
 
     do{
         draw (campo, goljug, golia);//dibujar en pantalla
         input(campo ,&pelX, &pelY, &inijug, &finjug, &iniia, &finia, &modX, &modY, &modia, &goljug, &golia);//verificar y modifical la posicion
         update(campo, pelX, pelY, inijug, finjug, iniia, finia);//actualiza la matriz campo
+        // Velocidad del juego:
         //Sleep (1);
     }while(goljug <= 3 || golia <= 3);
 }
 
 void draw (char campo[V][H], int* goljug, int* golia){
+
     system("cls");
     hidecursor();
     contador(goljug, golia);
     leercamp(campo);
-
 }
 
 void input (char campo[V][H], int *pelX, int* pelY, int* inijug, int* finjug, int* iniia, int* finia, int* modX, int* modY, int* modia, int* goljug, int* golia){
@@ -148,8 +146,8 @@ void input (char campo[V][H], int *pelX, int* pelY, int* inijug, int* finjug, in
     /////////////verificacion////////////////
     if (*pelY == 1 || *pelY == V-2){
         *modY *= -1;
-
     }
+
     if (*pelX == 1){
         *golia += 1;
         *pelX = 37;
@@ -157,8 +155,8 @@ void input (char campo[V][H], int *pelX, int* pelY, int* inijug, int* finjug, in
         printf("              Presiona ENTER 2 veces para seguir la partida\n");
         getchar();
         getchar();
-
     }
+
     if (*pelX == H-2){
         *goljug += 1;
         *pelX = 37;
@@ -166,8 +164,8 @@ void input (char campo[V][H], int *pelX, int* pelY, int* inijug, int* finjug, in
         printf("             Presiona ENTER 2 veces para seguir la partida\n");
         getchar();
         getchar();
-
     }
+
     if (*pelX == 37 && *pelY == 10){
 
         *modX *= numeroAleatoreo();
@@ -175,9 +173,9 @@ void input (char campo[V][H], int *pelX, int* pelY, int* inijug, int* finjug, in
     }
 
     if (*pelX == 37){ // Barra del centro que cambia direccion de la pelota
-        //*modX *= numeroAleatoreo();
 
 
+/////// Teletransportacion //////////////////////////////////////////////
         *pelX +=  (*modX);
         *pelX +=  (*modX);
         *pelX +=  (*modX);
@@ -197,14 +195,12 @@ void input (char campo[V][H], int *pelX, int* pelY, int* inijug, int* finjug, in
 
     }
 
-
     if (*pelX == 4){
         for (i = (*inijug); i < (*finjug); i++){
             if (i == *pelY){
                 *modX *= -1;
             }
         }
-
     }
 
     if (*pelX == H-4){
@@ -225,68 +221,66 @@ void input (char campo[V][H], int *pelX, int* pelY, int* inijug, int* finjug, in
     }
     if (*goljug == 3 || *golia  == 3){
 
-            if (*goljug == 3){
-                printf("*****************El jugador 1 ha ganado la partida****************\n\n");
-                printf("*****************El jugador 1 ha ganado la partida****************\n\n");
-                printf("*****************El jugador 1 ha ganado la partida****************\n\n");
-                printf("                Presiona ENTER 3 veces para jugar una nueva partida\n");
-                getchar();
-                getchar();
-                getchar();
-                main();
+        if (*goljug == 3){
+            printf("*****************El jugador 1 ha ganado la partida****************\n\n");
+            printf("*****************El jugador 1 ha ganado la partida****************\n\n");
+            printf("*****************El jugador 1 ha ganado la partida****************\n\n");
+            printf("                Presiona ENTER 3 veces para jugar una nueva partida\n");
+            getchar();
+            getchar();
+            getchar();
+            system("cls");
+            main();
 
-            }
-            if (*golia == 3){
-                printf("****************El jugador 2 ha gando la partida*****************\n\n");
-                printf("****************El jugador 2 ha gando la partida*****************\n\n");
-                printf("****************El jugador 2 ha gando la partida*****************\n\n");
-                printf("                Presiona ENTER 3 veces para jugar una nueva partida\n");
-                getchar();
-                getchar();
-                getchar();
-                main();
-            }
+        }
+        if (*golia == 3){
+            printf("****************El jugador 2 ha gando la partida*****************\n\n");
+            printf("****************El jugador 2 ha gando la partida*****************\n\n");
+            printf("****************El jugador 2 ha gando la partida*****************\n\n");
+            printf("                Presiona ENTER 3 veces para jugar una nueva partida\n");
+            getchar();
+            getchar();
+            getchar();
+            system("cls");
+            main();
+        }
 
-            }
-        //Raqueta del Jugador
+    }
+        //Raqueta del los Jugadores
 
         if (kbhit()== 1){
 
             key = getch() ;// lo mismo que scanf solo que no hay que pulsar la tecla intro
 
-            if (key == 'w'){
-                if (*inijug != 1){
-                    *inijug -= 1;
-                    *finjug -= 1;
+                if (key == 'w'){
+                    if (*inijug != 1){
+                        *inijug -= 1;
+                        *finjug -= 1;
+                    }
+                }
+
+                if (key == 'x'){
+                    if(*finjug != V-2){
+                        *inijug += 1;
+                        *finjug += 1;
+                    }
+                }
+                if (key == '8'){
+                    if (*iniia != 1){
+                        *iniia -= 1;
+                        *finia -= 1;
+                    }
+            }
+
+            if (key == '2'){
+                if(*finia != V-2){
+                    *iniia += 1;
+                    *finia += 1;
                 }
             }
 
-            if (key == 'x'){
-                if(*finjug != V-2){
-                    *inijug += 1;
-                    *finjug += 1;
-                }
-            }
-            if (key == '8'){
-                if (*iniia != 1){
-                    *iniia -= 1;
-                    *finia -= 1;
-                }
         }
-
-        if (key == '2'){
-            if(*finia != V-2){
-                *iniia += 1;
-                *finia += 1;
-            }
-        }
-
-
-        }
-    }
-
-
-
+}
 
 void update (char campo[V][H], int pelX,int pelY, int inijug, int finjug, int iniia, int finia){
     borde (campo);
@@ -300,8 +294,8 @@ void contador (int goljug, int golia){
     printf("Jugador 1 --------------------- |%d|  :  |%d| -----------------------Jugador 2\n", goljug, golia);
 }
 
-void hidecursor()
-{
+void hidecursor(){
+
    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
    CONSOLE_CURSOR_INFO info;
    info.dwSize = 100;
@@ -310,55 +304,46 @@ void hidecursor()
 }
 
 int numeroAleatoreo(){
+
     int myArray[2] = {-1,1};
     int randomIndex = rand() % 2;
     int randomValue = myArray[randomIndex];
     return randomValue;
 }
 
-
 void titilante(){
 
     int i = 0, x;
-
-
-
     while (i == 0){
+
         int key, x;
 
         if (kbhit()== 1){
+
         key = getch();
 
+            if (key == getch()){
 
-        if (key == getch()){
-
-            printf("\r                                                                      ");
-            printf("\r El juego comienza en :  \n");
-            printf("\r 3 ");
-            Sleep(500);
-            printf("\r 2 ");
-            Sleep(500);
-            printf("\r 1 ");
-            Sleep(500);
-            i = 1;
+                printf("\r                                                                      ");
+                printf("\r                           El juego comienza en :  \n");
+                printf("\r                                     3 ");
+                Sleep(500);
+                printf("\r                                     2 ");
+                Sleep(500);
+                printf("\r                                     1 ");
+                Sleep(500);
+                i = 1;
             }
-
         }
+
         else{
-            printf("\r             Presiona una tecla 2 veces para comenzar el juego !!!!");
+            printf("\rPresiona una tecla 2 veces para comenzar el juego Player1: w,y  Player2: 8,2");
             Sleep(500);
-            printf("\r                                                                   ");
+            printf("\r                                                                                      ");
             Sleep(300);
         }
-
-
-
-
-
-            }
-
-
     }
+}
 
 
 
