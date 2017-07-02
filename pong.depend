@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1498436401 source:c:\users\renat\documents\programmes c\pong\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<math.h>
+
